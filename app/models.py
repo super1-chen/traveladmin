@@ -46,6 +46,16 @@ class Role(db.Model, RoleMixin):
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def insert_roles():
+        roles = ('user', 'superuser')
+        for r in roles:
+            role = Role.query.filter_by(name=r).first()
+            if role is None:
+                role = Role(name=r)
+            role.name = r
+            db.session.add(role)
+        db.session.commit()
 
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
